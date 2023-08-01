@@ -8,6 +8,11 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 black = "^23.7.0"
+python-multipart = "^0.0.6"
+fastapi = {extras = ["all"], version = "^0.100.1"}
+uvicorn = {extras = ["all"], version = "^0.23.2"}
+psycopg2-binary = "^2.9.6"
+sqlalchemy = "^2.0.19"
 
 
 [build-system]
