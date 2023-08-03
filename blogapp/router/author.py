@@ -21,7 +21,7 @@ router=APIRouter(
 #Dependency
 
 @router.post("/",status_code= status.HTTP_201_CREATED)
-def create_author(author: schema.AuthorLogin, db : Session = Depends(get_db)):
+def create_author(author: schema.AuthorCreate, db : Session = Depends(get_db)):
     #hash the password, retrieve from  user.password
     hashed_password = hash(author.password)
     author.password = hashed_password #update the pydantic user model for password
@@ -46,6 +46,8 @@ def login(user_credentials:  Annotated[OAuth2PasswordRequestForm, Depends()], db
             detail= "Invalid Credentials"
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    print(author)
+    print("*"*50)
     access_token = create_access_token(
         data = {"sub": author.name}, expires_delta = access_token_expires
     )

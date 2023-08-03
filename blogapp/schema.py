@@ -5,9 +5,8 @@ class Author(BaseModel):
     name: str
     email: str | None = None
 
-    
-class AuthorInDB(Author):
-    hashed_password: str
+class AuthorCreate(Author):
+    password : str
 
 
 class AuthorOut(Author):

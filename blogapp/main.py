@@ -13,4 +13,4 @@ app.include_router(author.router)
 
 @app.get("/")
 async def welcome():
-    return "Welcome to my site"
+    return {"data": "Welcome to my site"}

@@ -17,8 +17,8 @@ router=APIRouter(
 
 @router.get("/",status_code=200,response_model=List[schema.BlogGet])
 async def read_all_blogs(author=Depends(get_current_author),db:Session=Depends(get_db)):
+
     db_blogs=db.query(model.Blog).filter(model.Blog.author_id == author.id).all()
-    print(f'db todos are {db_blogs}')
     db_json=[db_blog for db_blog in db_blogs]
     return db_json
 
@@ -45,10 +45,10 @@ async def post_blog(blog:schema.BlogCreate,author:schema.AuthorOut = Depends(get
         content = blog.content,
         author_id = author.id
     )
-    db.add(db_author)
+    db.add(author_blog)
     db.commit()
-    db.refresh(db_author)
-    return db_author
+    db.refresh(author_blog)
+    return author_blog
 
 
 @router.put("/{blog_id}", status_code= status.HTTP_201_CREATED)
