@@ -4,6 +4,9 @@ class TodoBase(BaseModel):
     task: str | None = None
     minutes: int | None = None
 
+    class Config:
+        orm_mode = True
+
 class TodoGet(BaseModel):
     id:int
     task: str | None = None

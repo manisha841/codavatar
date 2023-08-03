@@ -34,7 +34,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)],db : Se
         token_data = schema.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user= db.query(model.User).filter(model.User.name == username).first()
+    user= db.query(model.User).filter(model.User.name == token_data.username).first()
     # user = get_user(db=db ,user_name = token_data.username)
     if user is None:
         raise credentials_exception
