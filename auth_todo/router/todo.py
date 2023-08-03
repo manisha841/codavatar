@@ -14,7 +14,7 @@ router=APIRouter(
     )
 
 @router.get("/",status_code=200,response_model=List[schema.TodoGet])
-async def read_all_todo(user:schema.UserOut=Depends(get_current_user),db:Session=Depends(get_db)):
+async def read_all_todo(user=Depends(get_current_user),db:Session=Depends(get_db)):
     db_todos=db.query(model.Todo).filter(model.Todo.user_id==user.id).all()
     print(f'db todos are {db_todos}')
     db_json=[db_todo for db_todo in db_todos]
@@ -48,7 +48,7 @@ async def post_todos(task:schema.TodoCreate,user:schema.UserOut = Depends(get_cu
 
 
 @router.put("/{task_id}", status_code= status.HTTP_201_CREATED)
-async def post_todo(task_id: int, task:schema.TodoGet,user:schema.UserOut = Depends(get_current_user), db: Session = Depends(get_db)):
+async def update_todo(task_id: int, task:schema.TodoGet,user:schema.UserOut = Depends(get_current_user), db: Session = Depends(get_db)):
     user = db.query(model.Todo).filter(model.Todo.user_id == user.id, model.Todo.id == task_id)
     user_id = user.id
     if not user_id:

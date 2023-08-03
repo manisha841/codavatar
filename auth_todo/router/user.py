@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, FastAPI, HTTPException,status
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from typing import Annotated, List
 from datetime import timedelta
@@ -12,7 +13,7 @@ model.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 router=APIRouter(
-    prefix="/users",
+    prefix="/users"
     )
 
 #Dependency
@@ -33,8 +34,8 @@ def create_user(user: schema.UserBase, db : Session = Depends(get_db)):
 
 
 @router.post('/token')
-def login(user_credentials: schema.UserLogin, db: Session = Depends(get_db)):
-    user = db.query(model.User).filter(model.User.email == user_credentials.email).first()
+def login(user_credentials:  Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
+    user = db.query(model.User).filter(model.User.email == user_credentials.username).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail= "Invalid Credentials")
     

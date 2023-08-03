@@ -14,8 +14,6 @@ class Todo(Base):
 
     owner = relationship("User", back_populates="todos",cascade="all, delete")
 
-    def __repr__(self):
-        return f"<Todo {self.name}>"
 
 class User(Base):
     __tablename__ = 'users'
@@ -26,6 +24,3 @@ class User(Base):
     password = Column(String, nullable=False)
     disabled = Column(Boolean,default=False)
     todos = relationship("Todo", back_populates="owner",cascade="all, delete" )
-
-    def __repr__(self):
-        return f"<User {self.name}>"

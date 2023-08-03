@@ -1,20 +1,5 @@
 from pydantic import BaseModel
 
-class TodoBase(BaseModel):
-    task: str | None = None
-    minutes: int | None = None
-
-    class Config:
-        orm_mode = True
-
-class TodoGet(BaseModel):
-    id:int
-    task: str | None = None
-    minutes: int | None = None
-
-class TodoCreate(TodoBase):
-    id:int
-
 class UserBase(BaseModel):
     # id : int
     name : str
@@ -44,3 +29,23 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: str | None = None
 
+
+class TodoBase(BaseModel):
+    task: str | None = None
+    minutes: int | None = None
+
+    class Config:
+        orm_mode = True
+
+class TodoGet(BaseModel):
+    id:int
+    task: str | None = None
+    minutes: int | None = None
+    user_id:int
+
+    class Config:
+        orm_mode = True
+
+
+class TodoCreate(TodoBase):
+    id:int
