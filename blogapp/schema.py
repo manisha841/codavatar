@@ -30,14 +30,14 @@ class Blog(BaseModel):
 class BlogGet(BaseModel):
     id:int
     title: str | None = None
-    content: int | None = None
+    content: str | None = None
     published : bool | None = None
 
     class Config:
         orm_mode = True
 
 class BlogCreate(Blog):
-    id:int
+    pass
 
 class Token(BaseModel):
     access_token: str

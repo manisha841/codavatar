@@ -3,12 +3,14 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from typing import Annotated, List
 from datetime import timedelta
+from auth.author import get_current_author
 
-# from auth import ACCESS_TOKEN_EXPIRE_MINUTES
-from database import SessionLocal, engine, get_db
+from database import engine, get_db
 import model, schema
 from auth.hashing import hash, verify
 from auth.token import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
+from auth.author import get_current_author
+
 model.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -39,7 +41,6 @@ def login(user_credentials:  Annotated[OAuth2PasswordRequestForm, Depends()], db
     author = db.query(model.Author).filter(model.Author.email == user_credentials.username).first()
     if not author:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail= "Invalid Credentials")
-    print(author)
     if not verify(user_credentials.password, author.password):
         raise HTTPException(
             status_code= status.HTTP_404_NOT_FOUND, 
@@ -52,4 +53,3 @@ def login(user_credentials:  Annotated[OAuth2PasswordRequestForm, Depends()], db
         data = {"sub": author.name}, expires_delta = access_token_expires
     )
     return {"access_token" : access_token, "token_type":"bearer"}
-

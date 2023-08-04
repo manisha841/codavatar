@@ -1,15 +1,7 @@
-#create_user
-#authenticate_user
-#get_current_user
-
-from datetime import datetime, timedelta
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
-from passlib.context import CryptContext
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -25,9 +17,9 @@ async def get_current_author(token: Annotated[str, Depends(oauth2_scheme)], db: 
         detail= "Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"}
     )
+    payload = jwt.decode (token, SECRET_KEY, algorithms=[ALGORITHM])
+    username : str = payload.get("sub")
     try:
-        payload = jwt.decode (token, SECRET_KEY, algorithms=[ALGORITHM])
-        username : str = payload.get("sub")
         if username is None:
             raise credentials_exception
         token_data = schema.TokenData(username=username)

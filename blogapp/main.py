@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import APIRouter,FastAPI
 from database import engine
 import model
 from router import blog, author
